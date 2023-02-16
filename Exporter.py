@@ -1,13 +1,14 @@
-# Exporter initial
-import sys
-import getopt
 import codecs
+import getopt
+import sys
+
 import Tweet_Preprocessing
 
 if sys.version_info[0] < 3:
     import got
 else:
     import got3 as got
+
 
 def main(argv):
     if len(argv) == 0:
@@ -16,7 +17,7 @@ def main(argv):
 
     try:
         opts, _ = getopt.getopt(argv, "", (
-        "username=", "near=", "within=", "since=", "until=", "querysearch=", "toptweets", "maxtweets=", "output="))
+            "username=", "near=", "within=", "since=", "until=", "querysearch=", "toptweets", "maxtweets=", "output="))
 
         tweetCriteria = got.manager.TweetCriteria()
         outputFileName = "./Tweet_data/tweet_data.csv"
@@ -57,7 +58,9 @@ def main(argv):
 
         def receiveBuffer(tweetss):
             for t in tweetss:
-                outputFile.write(('\n%s,%s,%s,%s,%s,%d,%d,"""%s""",%s,%s,%s,%s' % (t.id, t.username, t.author_id, t.date.strftime("%Y-%m-%d"), t.date.strftime("%H:%M"), t.retweets, t.favorites, t.text, t.mentions, t.hashtags, t.permalink, t.urls)))
+                outputFile.write(('\n%s,%s,%s,%s,%s,%d,%d,"""%s""",%s,%s,%s,%s' % (
+                    t.id, t.username, t.author_id, t.date.strftime("%Y-%m-%d"), t.date.strftime("%H:%M"), t.retweets,
+                    t.favorites, t.text, t.mentions, t.hashtags, t.permalink, t.urls)))
             outputFile.flush()
             print('More %d Saved On File...\n' % len(tweetss))
 
