@@ -1,5 +1,8 @@
+import bisect
+import datetime
+
 import pandas as pd
-import bisect, datetime
+
 import Viewership_Prediction
 
 
@@ -15,12 +18,11 @@ def viewers_change(str_views):
 
 
 def main(prediction_file, simpsons_file):
-
     print('Prediction Features Extraction Started')
-    viewer_data = pd.read_csv(simpsons_file, usecols=range(13), index_col=False, low_memory = False)
+    viewer_data = pd.read_csv(simpsons_file, usecols=range(13), index_col=False, low_memory=False)
     print('Episode Data File Read Successful')
 
-    tweet_data = pd.read_csv(prediction_file, usecols=range(15), index_col=False, low_memory = False)
+    tweet_data = pd.read_csv(prediction_file, usecols=range(15), index_col=False, low_memory=False)
     print('Tweet Data File Read Successful')
 
     viewer_data['Air_Date'] = list(map(date_change, viewer_data['Air_Date']))
@@ -79,7 +81,7 @@ def main(prediction_file, simpsons_file):
     viewer_data['Sentiment_Score'] = sentimentScore
     viewer_data['Tweets_Per_Day'] = tweetsPerDay
     viewer_data['Unique_Users'] = uniqueUsers
-    viewer_data.to_csv(simpsons_file, index = False)
+    viewer_data.to_csv(simpsons_file, index=False)
 
     Viewership_Prediction.main(simpsons_file)
 
