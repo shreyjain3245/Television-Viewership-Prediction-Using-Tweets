@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
-import sys
-import getopt
 import codecs
-import Tweet_Preprocessing
+import getopt
+import sys
 
 if sys.version_info[0] < 3:
     import got
 else:
     import got3 as got
+
 
 def main(argv):
     if len(argv) == 0:
@@ -57,7 +56,9 @@ def main(argv):
 
         def receiveBuffer(tweetss):
             for t in tweetss:
-                outputFile.write(('\n%s,%s,%s,%s,%s,%d,%d,"""%s""",%s,%s,%s,%s' % (t.id, t.username, t.author_id, t.date.strftime("%Y-%m-%d"), t.date.strftime("%H:%M"), t.retweets, t.favorites, t.text, t.mentions, t.hashtags, t.permalink, t.urls)))
+                outputFile.write(('\n%s,%s,%s,%s,%s,%d,%d,"""%s""",%s,%s,%s,%s' % (
+                t.id, t.username, t.author_id, t.date.strftime("%Y-%m-%d"), t.date.strftime("%H:%M"), t.retweets,
+                t.favorites, t.text, t.mentions, t.hashtags, t.permalink, t.urls)))
             outputFile.flush()
             print('More %d Saved On File...\n' % len(tweetss))
 
@@ -68,7 +69,6 @@ def main(argv):
     finally:
         outputFile.close()
         print('Tweet Extraction Complete. Output file generated "%s".' % outputFileName)
-        # Tweet_Preprocessing.main(outputFileName)
 
 
 if __name__ == '__main__':
