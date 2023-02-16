@@ -1,10 +1,10 @@
 import warnings
-import ML_Sentiment
-import pandas as pd
-from nltk.stem.porter import *
-from nltk.stem import WordNetLemmatizer
 
-warnings.filterwarnings("ignore", category = DeprecationWarning)
+import pandas as pd
+from nltk.stem import WordNetLemmatizer
+from nltk.stem.porter import *
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 def remove_http(txt):
@@ -16,32 +16,31 @@ def remove_http(txt):
     return " ".join(lst)
 
 
-def remove_pattern(txt,pattern):
+def remove_pattern(txt, pattern):
     txt = str(txt)
     return " ".join(filter(lambda x: x[0] != pattern, txt.split()))
 
 
 def main(fileName):
-
     print("Tweet Preprocessing Started")
 
-    train = pd.read_csv(fileName, usecols = range(12), encoding = 'utf-8', index_col = False, low_memory = False)
+    train = pd.read_csv(fileName, usecols=range(12), encoding='utf-8', index_col=False, low_memory=False)
     print("File Read Successful")
 
-    train['Tidy_Tweet'] = [remove_pattern(x,'@') for x in train['Text']]
+    train['Tidy_Tweet'] = [remove_pattern(x, '@') for x in train['Text']]
     print("Removed @Handle")
 
     # train['Tidy_Tweet'] = [remove_http(x) for x in train['Tidy_Tweet']]
-    train['Tidy_Tweet'] = [re.sub( '((www\.[^\s]+)|(https?://[^\s]+))' , ' ' , tweet ) for tweet in train['Tidy_Tweet']]
+    train['Tidy_Tweet'] = [re.sub('((www\.[^\s]+)|(https?://[^\s]+))', ' ', tweet) for tweet in train['Tidy_Tweet']]
     print("Removed URLs")
 
     train['Tidy_Tweet'] = train['Tidy_Tweet'].str.replace("[^a-zA-Z#]", " ")
     print("Removed Special Characters, Numbers, Punctuations")
 
-    train['Tidy_Tweet'] = train['Tidy_Tweet'].apply(lambda x: ' '.join([w for w in x.split() if len(w)>2]))
+    train['Tidy_Tweet'] = train['Tidy_Tweet'].apply(lambda x: ' '.join([w for w in x.split() if len(w) > 2]))
     print("Removed Short Words")
 
-    tokenized_tweet_train = train['Tidy_Tweet'].apply(lambda x : x.split())
+    tokenized_tweet_train = train['Tidy_Tweet'].apply(lambda x: x.split())
     print("Tokenization Done")
 
     stemmer = PorterStemmer()
@@ -60,10 +59,10 @@ def main(fileName):
     outputFileName = './Preprocessed_data/tweet_data_preprocessed.csv'
     train.to_csv(outputFileName, index=False)
 
-    print('Tweet Preprocessing Complete. Output file generated "%s".' % outputFileName )
+    print('Tweet Preprocessing Complete. Output file generated "%s".' % outputFileName)
 
     # ML_Sentiment.main(outputFileName)
 
 
-if __name__ == "__main__" :
-    main( './Tweet_data/tweet_data.csv' )
+if __name__ == "__main__":
+    main('./Tweet_data/tweet_data.csv')
